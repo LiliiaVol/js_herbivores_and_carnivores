@@ -1,8 +1,11 @@
 'use strict';
 
+const MAX_HEALTH = 100;
+const DAMAGE = 50;
+
 class Animal {
   static alive = [];
-  health = 100;
+  health = MAX_HEALTH;
 
   constructor(name) {
     this.name = name;
@@ -24,11 +27,14 @@ class Herbivore extends Animal {
 
 class Carnivore extends Animal {
   bite(selectedHerbivore) {
-    if (selectedHerbivore.hidden === false) {
-      selectedHerbivore.health = selectedHerbivore.health - 50;
+    if (
+      !selectedHerbivore.hidden &&
+      Object.hasOwn(selectedHerbivore, 'hidden')
+    ) {
+      selectedHerbivore.health = selectedHerbivore.health - DAMAGE;
     }
 
-    if (selectedHerbivore.health === 0) {
+    if (selectedHerbivore.health <= 0) {
       Animal.alive = Animal.alive.filter((animal) => animal.health > 0);
     }
   }
